@@ -7,6 +7,7 @@ import { IHabitController } from './interfaces/habit.controller.interface';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { HabitStatus } from './habit-status.enum';
 import { Habit } from './habit.entity';
+import { HabitResponse } from './interfaces/habit-response.interface';
 
 @UseGuards(AuthGuard('jwt'))
 @Controller('habits')
@@ -17,8 +18,9 @@ export class HabitsController implements IHabitController {
   findAll(
     @CurrentUser() user: { id: number },
     @Query('status') status: HabitStatus = HabitStatus.ACTIVE,
-  ): Promise<Habit[]> {
-    return this.habitsService.findAll(user.id, status);
+    @Query('today') today: string,
+  ): Promise<HabitResponse[]> {
+    return this.habitsService.findAll(user.id, status, today);
   }
 
   @Get('search')

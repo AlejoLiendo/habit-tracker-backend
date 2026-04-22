@@ -23,9 +23,8 @@ export class HabitsService implements IHabitService {
     private readonly habitLogsService: HabitLogsService,
   ) {}
 
-  async findAll(userId: number, status: HabitStatus): Promise<HabitResponse[]> {
+  async findAll(userId: number, status: HabitStatus, today: string): Promise<HabitResponse[]> {
     const habits = await this.habitRepository.findAllByUserId(userId, status);
-    const today = new Date().toISOString().split('T')[0];
 
     return Promise.all(
       habits.map(async (habit) => {

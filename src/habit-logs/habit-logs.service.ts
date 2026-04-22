@@ -26,9 +26,6 @@ export class HabitLogsService implements IHabitLogService {
   async uncheck(userId: number, habitId: number, date: string): Promise<void> {
     await this.habitsService.findOneOrFail(userId, habitId);
 
-    const today = new Date().toISOString().split('T')[0];
-    if (date !== today) throw new BadRequestException('Solo podés desmarcar el día de hoy');
-
     const log = await this.habitLogRepository.findByHabitIdAndDate(habitId, date);
     if (!log) throw new NotFoundException('No existe un check para ese día');
 
